@@ -1,0 +1,231 @@
+package com.qsp.shop.controller;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Properties;
+
+import org.postgresql.Driver;
+
+import com.qsp.shop.model.Product;
+
+public class ShopController {
+
+
+	public int addProoduct(int id,String name, int price,int quantity,boolean availability) {
+
+		String url="jdbc:postgresql://localhost:5432/shop_jdbc";
+		String user="postgres";
+		String password="root";
+
+		int executeUpdate=0;
+
+		Connection connection = null;
+		try {
+			Class.forName("org.postgresql.Driver");
+
+			connection = DriverManager.getConnection(url,user,password);
+			PreparedStatement prepareStatement = connection.prepareStatement("INSERT INTO product VALUES(?,?,?,?,?)");
+			prepareStatement.setInt(1,id );
+			prepareStatement.setString(2,name );
+			prepareStatement.setInt(3, price);
+			prepareStatement.setInt(4, quantity);
+			prepareStatement.setBoolean(5, availability);
+
+			executeUpdate = prepareStatement.executeUpdate();
+
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+
+			if(connection!=null) {
+				try {
+					connection.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+
+		}
+
+		return executeUpdate;
+
+	}
+
+	public void addMultipleProduct(ArrayList<Product> products) {
+		Connection connection = null;
+		String url="jdbc:postgresql://localhost:5432/shop_jdbc";
+		String user="postgres";
+		String password="root";
+		try {
+
+
+			Class.forName("org.postgresql.Driver");
+
+			connection = DriverManager.getConnection(url,user,password);
+
+			String sql = "INSERT INTO product VALUES(?,?,?,?,?);";
+			PreparedStatement prepareStatement = connection.prepareStatement(sql);
+
+			for (Product product : products) {
+				prepareStatement.setInt(1, product.getP_id());
+				prepareStatement.setString(2, product.getP_name());
+				prepareStatement.setInt(3, product.getP_price());
+				prepareStatement.setInt(4, product.getP_quantity());
+				prepareStatement.setBoolean(5, product.isP_availability());
+				prepareStatement.addBatch();
+			}
+			prepareStatement.executeBatch();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	//	-------------------------------------------------------------------------------------FETCH----------------------------------------------
+
+	public ResultSet fetchProduct(int id) {
+		ResultSet resultSet=null;
+		Connection connection =null;
+		String url="jdbc:postgresql://localhost:5432/shop_jdbc";
+		String user="postgres";
+		String password="root";
+		try {
+			
+			Class.forName("org.postgresql.Driver");
+
+			connection = DriverManager.getConnection(url,user,password);
+			
+			PreparedStatement prepareStatement = connection.prepareStatement("SELECT * FROM product WHERE p_id=?");
+			prepareStatement.setInt(1,id);
+			resultSet = prepareStatement.executeQuery();
+
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return resultSet;
+	}
+	
+	
+	
+	public int removeProduct(int id) {
+		
+		String url="jdbc:postgresql://localhost:5432/shop_jdbc";
+		String user="postgres";
+		String password="root";
+
+		int executeUpdate=0;
+
+		Connection connection = null;
+		try {
+			Class.forName("org.postgresql.Driver");
+
+			connection = DriverManager.getConnection(url,user,password);
+			PreparedStatement prepareStatement = connection.prepareStatement("DELETE FROM product WHERE p_id=?");
+			prepareStatement.setInt(1,id );
+			executeUpdate = prepareStatement.executeUpdate();
+
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+
+			if(connection!=null) {
+				try {
+					connection.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+
+		}
+
+		return executeUpdate ;	
+	}
+	
+    public int updateProductName(int id,String name) {
+		
+		String url="jdbc:postgresql://localhost:5432/shop_jdbc";
+		String user="postgres";
+		String password="root";
+
+		int updateVerify=0;
+
+		Connection connection = null;
+		try {
+			Class.forName("org.postgresql.Driver");
+
+			connection = DriverManager.getConnection(url,user,password);
+			PreparedStatement prepareStatement = connection.prepareStatement("UPDATE product SET p_name=? where p_id = ?");
+			prepareStatement.setString(1, name);
+			prepareStatement.setInt(2, id);
+			updateVerify = prepareStatement.executeUpdate();
+
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+
+			if(connection!=null) {
+				try {
+					connection.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+
+		}
+
+		return updateVerify ;
+		
+		
+		
+	}
+	
+	
+	
+	
+	
+}

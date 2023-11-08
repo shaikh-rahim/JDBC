@@ -1,0 +1,5 @@
+package com.qsp.shop.model;
+
+public class Product {
+
+}

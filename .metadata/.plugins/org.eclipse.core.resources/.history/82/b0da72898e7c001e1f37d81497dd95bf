@@ -1,0 +1,65 @@
+package com.qsp.shop.view;
+
+import java.util.Scanner;
+import com.qsp.shop.controller.ShopController;
+import com.qsp.shop.model.Product;
+
+public class ShopView {
+	static Scanner myInput = new Scanner(System.in);
+	static Product product = new Product();
+	static ShopController shopController =new ShopController();
+	public static void main(String[] args) {
+		do {
+			System.out.println("Select Operation to perform");
+			System.out.println(" 1.Add product\n 2.Remove product\n 3.Update product\n 4.Fetch product\n 0.Exit");
+			System.out.print("Enter digit respective to desire option :");
+			int userInput=myInput.nextInt();
+			myInput.nextLine();
+			switch (userInput) {
+			case 0:
+				myInput.close();
+				System.out.println("-----Exited------");
+				System.exit(0);
+				break;
+			case 1:
+				System.out.println("Enter product id : ");
+				int i_p_id=myInput.nextInt();
+				myInput.nextLine();
+				System.out.println("Enter product name : ");
+				String i_p_name=myInput.nextLine();
+				System.out.println("Enter product price : ");
+				int i_p_price=myInput.nextInt();
+				myInput.nextLine();
+				System.out.println("Enter product quantity : ");
+				int i_p_quantity=myInput.nextInt();
+				myInput.nextLine();
+				boolean i_p_availability=false;
+				if (i_p_quantity>0) {
+					i_p_availability=true;
+				}
+				if ((shopController.addProduct(i_p_id, i_p_name, i_p_price, i_p_quantity, i_p_availability))!= 0) {
+					System.out.println("Product Added");
+				} else {
+					System.out.println("Product not added");
+				}
+				break;
+				
+			case 2:
+	
+				break;
+			case 3:
+	
+				break;
+			case 4:
+	
+				break;
+
+			default:
+				System.out.println("-----Invalid Selection-------");
+				break;
+			}
+			
+		} while (true);
+	}
+
+}

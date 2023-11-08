@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;14-closeconnection/dbconfig&apos; to &apos;dbconfig.properties&apos;" description="Rename resource &apos;dbconfig&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="dbconfig" name="dbconfig.properties" stamp="1698656064292" updateReferences="true"/>
+</session>
